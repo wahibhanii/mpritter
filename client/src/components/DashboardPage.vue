@@ -127,8 +127,8 @@
         this.$router.push({name: 'HomePage'})
       },
       gotoUserProfile () {
-        console.log('home')
-        this.$router.push({name: 'HomePage'})
+        console.log('userProfile')
+        this.$router.push({name: 'UserProfile'})
       }
     }
   }
