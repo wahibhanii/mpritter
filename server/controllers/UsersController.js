@@ -8,7 +8,7 @@ const jwt         = require('jsonwebtoken');
 class UsersController {
 
   static createUser (req, res) {
-    console.log('createUser')
+    console.log('createUser', req.body)
     if ((req.body.email !== undefined) && (req.body.userName !== undefined) && (req.body.password !== undefined)) {
       let newUser = {
         email: req.body.email,
@@ -24,6 +24,7 @@ class UsersController {
         })
       })
       .catch(err => {
+        console.log(err)
         res.status(500).send(err)
       })
     } else {

@@ -9,12 +9,14 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 
 
+
+
 const index = require('./routes/index');
 const users = require('./routes/users');
 const posts = require('./routes/posts')
 
 const app = express();
-
+app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

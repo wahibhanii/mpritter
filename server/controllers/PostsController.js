@@ -40,7 +40,7 @@ class PostsController {
   }
 
   static getAllPosts(req, res) {
-    Post.find({})
+    Post.find({}).populate('poster')
     .then(result => {
       res.status(200).json({
         message: 'Posts Found...',
@@ -56,6 +56,7 @@ class PostsController {
   static searchPostsByTag(req, res) {
     console.log(req.query.tag)
     Post.find({$text: {$search: req.query.tag}})
+    .populate('poster')
     .sort({createdAt: 'desc'})
     .exec()
     .then(result => {
