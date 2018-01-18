@@ -84,32 +84,49 @@ class UsersController {
   }
 
   static updateUser(req, res) {
-    let data = JSON.parse(req.body.update)
-    User.findOneAndUpdate({_id: req.params.id}, data, {new: true})
-    .then(result => {
-      res.status(200).json({
-        message: 'User Updated',
-        data: result
+    if (req.headers.decoded._id != req.params.id){
+      res.status(403).json({
+        message: 'Forbidden'
       })
-    })
-    .catch(err => {
-      console.log(err)
-      res.status(500).send(err)
-    })
+    } else {
+      let newData = {
+        userName : req.body.userName,
+        email   : req.body.email,
+        password: bcrypt.hashSync(req.body.password, salt),
+        profPicUrl: req.body.imagelink
+      }
+      User.findOneAndUpdate({_id: req.params.id}, newData, {new: true})
+      .then(result => {
+        res.status(200).json({
+          message: 'User Updated',
+          data: result
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).send(err)
+      })
+    }
   }
 
   static deleteUser (req, res) {
-    User.deleteOne({_id: req.params.id})
-    .then(result => {
-      res.status(200).json({
-        message: 'User Deleted',
-        data: result
+    if (req.headers.decoded._id != req.params.id){
+      res.status(403).json({
+        message: 'Forbidden'
       })
-    })
-    .catch(err => {
-      console.log(err)
-      res.status(500).send(err)
-    })
+    } else {
+      User.deleteOne({_id: req.params.id})
+      .then(result => {
+        res.status(200).json({
+          message: 'User Deleted',
+          data: result
+        })
+      })
+      .catch(err => {
+        console.log(err)
+        res.status(500).send(err)
+      })
+    }
   }
  
 }

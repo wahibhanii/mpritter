@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const UsersController = require('../controllers/usersController')
-
+const authentication = require('../middleware/authentication')
 // Create User
 router.post('/', UsersController.createUser)
 
@@ -12,9 +12,9 @@ router.post('/login', UsersController.login)
 router.get('/:id', UsersController.getUserById)
 
 // Edit User
-router.put('/:id', UsersController.updateUser)
+router.put('/:id',  authentication,  UsersController.updateUser)
 
 // Create User
-router.delete('/:id', UsersController.deleteUser)
+router.delete('/:id',UsersController.deleteUser)
 
 module.exports = router;
