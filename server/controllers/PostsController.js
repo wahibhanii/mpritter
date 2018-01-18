@@ -13,18 +13,19 @@ class PostsController {
       content : req.body.content,
       createdAt: new Date(),
       hashtags : [],
-      poster: null,// request.headers.decoded._id
+      poster: req.headers.decoded._id
     }
     
     let arrTag = newPost.content.split(' ')
-    console.log(arrTag)
+    // console.log(arrTag)
     arrTag = arrTag.filter(word => {
-      console.log(word[0] === '#')
+      // console.log(word[0] === '#')
       return (word[0] === '#')
     })
-    console.log('>>>', arrTag)
+    arrTag = arrTag.join('').split('#').join(' ')
+    // console.log(arrTag)
     newPost.hashtags = arrTag
-
+    // console.log('>>>', newPost)
     Post.create(newPost)
     .then(result => {
       res.status(200).json({
@@ -39,16 +40,50 @@ class PostsController {
   }
 
   static getAllPosts(req, res) {
-    
+    Post.find({})
+    .then(result => {
+      res.status(200).json({
+        message: 'Posts Found...',
+        data: result
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send(err)
+    })
   }
   
   static searchPostsByTag(req, res) {
+    console.log(req.query.tag)
+    Post.find({$text: {$search: req.query.tag}})
+    .sort({createdAt: 'desc'})
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: 'Posts Found...',
+        data: result
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send(err)
+    })
     
   }
 
 
   static deletePost (req, res) {
-
+    Post.deleteOne({_id: req.params.id})
+    .then(result => {
+      res.status(200).json({
+        message: 'Post Deleted',
+        data: result
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send(err)
+    })
   }
  
 }

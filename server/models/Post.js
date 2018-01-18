@@ -14,10 +14,11 @@ const postSchema = new Schema({
       },
       required: [true, 'Pritt is required']
     },
-    hashtags: [String],
+    hashtags: String,
     createdAt: Date,
     poster: {type: Schema.Types.ObjectId, ref: 'User'}
 });
+postSchema.index({'hashtags': 'text' })
 
 const Post = mongoose.model('Post', postSchema)
 

@@ -13,13 +13,13 @@ const userSchema = new Schema({
         message: '{VALUE} is not a valid email!'
       },
       required : [true, 'User Email is Required!'],
-      unique : true,
+      // unique : true,
     }, 
     password: String,
     userName : String,
     profPicUrl: String
 });
-userSchema.plugin(uniqueValidator)
+// userSchema.plugin(uniqueValidator)
 
 const User = mongoose.model('User', userSchema)
 
